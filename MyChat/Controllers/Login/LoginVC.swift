@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class LoginVC: UIViewController {
     
@@ -67,7 +68,7 @@ class LoginVC: UIViewController {
         button.addTarget(self, action: #selector(onTapLogin), for: .touchUpInside)
         return button
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -100,9 +101,9 @@ class LoginVC: UIViewController {
                                width: scrollView.width-60,
                                height: 52)
         passwordTF.frame = CGRect(x: 30,
-                               y: emailTF.bottom+10,
-                               width: scrollView.width-60,
-                               height: 52)
+                                  y: emailTF.bottom+10,
+                                  width: scrollView.width-60,
+                                  height: 52)
         loginBtn.frame = CGRect(x: 30,
                                 y: passwordTF.bottom+25,
                                 width: scrollView.width-60,
@@ -125,7 +126,17 @@ class LoginVC: UIViewController {
             return
         }
         
-        //Firebase login
+        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
+            
+            guard let result = authResult, error == nil else{
+                print("error in login user")
+                return
+            }
+            
+            let user = result.user
+            print("Logged in successfully \(user.uid)")
+        }
+        
     }
     
     @objc func alertUserLoginError() {

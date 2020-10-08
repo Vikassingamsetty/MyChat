@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class RegistrationVC: UIViewController {
-
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
@@ -102,7 +103,7 @@ class RegistrationVC: UIViewController {
         button.addTarget(self, action: #selector(onTapSignup), for: .touchUpInside)
         return button
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -136,31 +137,31 @@ class RegistrationVC: UIViewController {
         
         let size = scrollView.width/3
         profileImage.frame = CGRect(x: (scrollView.width-size)/2,
-                                 y: 20,
-                                 width: size,
-                                 height: size)
+                                    y: 20,
+                                    width: size,
+                                    height: size)
         profileImage.layer.cornerRadius = profileImage.width / 2.0
         
         firstNameTF.frame = CGRect(x: 30,
-                               y: profileImage.bottom+15,
-                               width: scrollView.width-60,
-                               height: 52)
+                                   y: profileImage.bottom+15,
+                                   width: scrollView.width-60,
+                                   height: 52)
         lastNameTF.frame = CGRect(x: 30,
-                               y: firstNameTF.bottom+10,
-                               width: scrollView.width-60,
-                               height: 52)
+                                  y: firstNameTF.bottom+10,
+                                  width: scrollView.width-60,
+                                  height: 52)
         emailTF.frame = CGRect(x: 30,
                                y: lastNameTF.bottom+10,
                                width: scrollView.width-60,
                                height: 52)
         passwordTF.frame = CGRect(x: 30,
-                               y: emailTF.bottom+10,
-                               width: scrollView.width-60,
-                               height: 52)
+                                  y: emailTF.bottom+10,
+                                  width: scrollView.width-60,
+                                  height: 52)
         registerBtn.frame = CGRect(x: 30,
-                                y: passwordTF.bottom+25,
-                                width: scrollView.width-60,
-                                height: 52)
+                                   y: passwordTF.bottom+25,
+                                   width: scrollView.width-60,
+                                   height: 52)
         
     }
     
@@ -180,7 +181,18 @@ class RegistrationVC: UIViewController {
                 alertUserLoginError()
                 return
         }
-        //Firbase signup
+        
+        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
+            
+            guard let result = authResult, error == nil else{
+                print("Error in creating user")
+                return
+            }
+            
+            let user = result.user
+            print("Registered user is \(user)")
+            
+        }
         
     }
     
@@ -191,7 +203,7 @@ class RegistrationVC: UIViewController {
         alert.addAction(UIAlertAction(title: "dismiss", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-  
+    
     
 }
 
@@ -240,7 +252,7 @@ extension RegistrationVC: UIImagePickerControllerDelegate, UINavigationControlle
         vc.sourceType = .camera
         vc.delegate = self
         vc.allowsEditing = true
-       
+        
         if(UIImagePickerController .isSourceTypeAvailable(.camera)){
             present(vc, animated: true)
         } else {
