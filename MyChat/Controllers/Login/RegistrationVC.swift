@@ -22,6 +22,9 @@ class RegistrationVC: UIViewController {
         imageView.tintColor = .lightGray
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
+        imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
         return imageView
     }()
     
@@ -136,6 +139,8 @@ class RegistrationVC: UIViewController {
                                  y: 20,
                                  width: size,
                                  height: size)
+        profileImage.layer.cornerRadius = profileImage.width / 2.0
+        
         firstNameTF.frame = CGRect(x: 30,
                                y: profileImage.bottom+15,
                                width: scrollView.width-60,
@@ -160,7 +165,7 @@ class RegistrationVC: UIViewController {
     }
     
     @objc private func didTapImage(){
-        print("image tapped")
+        presentPhotoActionSheet()
     }
     
     @objc private func onTapSignup(){
@@ -204,6 +209,67 @@ extension RegistrationVC:UITextFieldDelegate {
             onTapSignup()
         }
         return true
+    }
+    
+}
+
+extension RegistrationVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func presentPhotoActionSheet() {
+        
+        let actionSheet = UIAlertController(title: "Profile Picture",
+                                            message: "How will you access?",
+                                            preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel",
+                                            style: .cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Take Photo",
+                                            style: .default,
+                                            handler: {[weak self] _ in
+                                                self?.presentCamera()
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Choose Photo",
+                                            style: .default,
+                                            handler: {[weak self] _ in
+                                                self?.presentGallery()
+        }))
+        present(actionSheet, animated: true)
+    }
+    
+    func presentCamera() {
+        let vc = UIImagePickerController()
+        vc.sourceType = .camera
+        vc.delegate = self
+        vc.allowsEditing = true
+       
+        if(UIImagePickerController .isSourceTypeAvailable(.camera)){
+            present(vc, animated: true)
+        } else {
+            let alertWarning = UIAlertController(title:"Warning", message: "You don't have camera", preferredStyle: .alert)
+            alertWarning.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            present(alertWarning, animated: true, completion: nil)
+        }
+    }
+    
+    func presentGallery() {
+        let vc = UIImagePickerController()
+        vc.sourceType = .photoLibrary
+        vc.delegate = self
+        vc.allowsEditing = true
+        present(vc, animated: true)
+    }
+    
+    
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        picker.dismiss(animated: true, completion: nil)
+        
+        guard let imageSelected = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {return}
+        profileImage.image = imageSelected
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
     
 }

@@ -56,5 +56,9 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Access camera to take a profile picture</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access gallery to select a profile picture</string>
 </dict>
 </plist>
