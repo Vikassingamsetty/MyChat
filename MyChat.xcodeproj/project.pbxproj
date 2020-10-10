@@ -23,6 +23,7 @@
 		1D3A591B252DB83A00F797CD /* VideoPlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3A591A252DB83A00F797CD /* VideoPlayerVC.swift */; };
 		1D3A591D252DB85F00F797CD /* NewConversationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3A591C252DB85F00F797CD /* NewConversationVC.swift */; };
 		1D3A591F252DB86A00F797CD /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3A591E252DB86A00F797CD /* ProfileVC.swift */; };
+		1D5C57C425321214008B7A95 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5C57C325321214008B7A95 /* DatabaseManager.swift */; };
 		CC29B0161F087685C8C077CE /* Pods_MyChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3712EDD48275B6F2A51F963 /* Pods_MyChat.framework */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +68,7 @@
 		1D3A591A252DB83A00F797CD /* VideoPlayerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerVC.swift; sourceTree = "<group>"; };
 		1D3A591C252DB85F00F797CD /* NewConversationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationVC.swift; sourceTree = "<group>"; };
 		1D3A591E252DB86A00F797CD /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
+		1D5C57C325321214008B7A95 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		F3712EDD48275B6F2A51F963 /* Pods_MyChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF15CCE84202BE3EB68D0E85 /* Pods-MyChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyChat.debug.xcconfig"; path = "Target Support Files/Pods-MyChat/Pods-MyChat.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -202,6 +204,7 @@
 				1D3A58DE252DB73A00F797CD /* AppDelegate.swift */,
 				1D3A58E0252DB73A00F797CD /* SceneDelegate.swift */,
 				1D10021E252ECDC00052C9E2 /* Extensions.swift */,
+				1D5C57C325321214008B7A95 /* DatabaseManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D3A591D252DB85F00F797CD /* NewConversationVC.swift in Sources */,
+				1D5C57C425321214008B7A95 /* DatabaseManager.swift in Sources */,
 				1D3A591B252DB83A00F797CD /* VideoPlayerVC.swift in Sources */,
 				1D3A58E3252DB73A00F797CD /* ConversationVC.swift in Sources */,
 				1D3A591F252DB86A00F797CD /* ProfileVC.swift in Sources */,

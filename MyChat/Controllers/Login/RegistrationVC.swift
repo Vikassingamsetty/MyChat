@@ -19,7 +19,7 @@ class RegistrationVC: UIViewController {
     
     private let profileImage:UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "person")
+        imageView.image = UIImage(systemName: "person.circle")
         imageView.tintColor = .lightGray
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
@@ -177,28 +177,39 @@ class RegistrationVC: UIViewController {
         passwordTF.resignFirstResponder()
         
         guard let fName = firstNameTF.text, let lName = lastNameTF.text,
-            let email = emailTF.text, let password = passwordTF.text, !fName.isEmpty, !lName.isEmpty, !email.isEmpty, !password.isEmpty else {
+            let email = emailTF.text, let password = passwordTF.text, !fName.isEmpty, !lName.isEmpty, !email.isEmpty, !password.isEmpty, password.count >= 6 else {
                 alertUserLoginError()
                 return
         }
         
-        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
-            
-            guard let result = authResult, error == nil else{
-                print("Error in creating user")
+        DatabaseManager.shared.userExists(with: email, completion: {[weak self] exists in
+            guard let self = self else{return}
+            guard !exists else{
+                self.alertUserLoginError(message: "Looks like email address already exists")
                 return
             }
             
-            let user = result.user
-            print("Registered user is \(user)")
+            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
+                
+                guard authResult != nil, error == nil else{
+                    print("Error in creating user")
+                    return
+                }
+                
+                DatabaseManager.shared.inserUser(with: ChatAppUser(firstName: fName,
+                                                                   lastName: lName,
+                                                                   emailAddress: email))
+                
+                self.navigationController?.dismiss(animated: true, completion: nil)
+            }
             
-        }
+        })
         
     }
     
-    @objc func alertUserLoginError() {
+    @objc func alertUserLoginError(message:String = "fields are empty to signup") {
         let alert = UIAlertController(title: "oops..",
-                                      message: "fields are empty to signup",
+                                      message: message,
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "dismiss", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -269,7 +280,6 @@ extension RegistrationVC: UIImagePickerControllerDelegate, UINavigationControlle
         vc.allowsEditing = true
         present(vc, animated: true)
     }
-    
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
